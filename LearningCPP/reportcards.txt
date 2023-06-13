@@ -1,0 +1,17 @@
+George P. Burdell
+Algebra: B
+Physics: A
+English: C
+GPA: 3.083333
+Nancy Rhodes
+Algebra: A
+Physics: A
+Economics: B
+GPA: 3.692308
+Dude McGuy
+Underwater Basket Weaving: B
+Economics: A
+GPA: 3.571429
+Cheese Burger
+Underwater Basket Weaving: C
+GPA: 2.000000

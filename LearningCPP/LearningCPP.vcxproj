@@ -141,15 +141,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Average.cpp" />
-    <ClCompile Include="GPA.cpp" />
+    <ClCompile Include="StudentRecords.cpp" />
     <ClCompile Include="Greetings.cpp" />
     <ClCompile Include="Grade.cpp" />
     <ClCompile Include="Course.cpp" />
+    <ClCompile Include="GradeInterface.cpp" />
     <ClCompile Include="Student.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Course.h" />
     <ClInclude Include="Grade.h" />
+    <ClInclude Include="StudentRecords.h" />
     <ClInclude Include="Student.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

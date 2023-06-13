@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include "StudentRecords.h"
+#include <fstream>
 
 std::vector<Student> students;
 std::vector<Course> courses;
@@ -53,12 +54,14 @@ void StudentRecords::add_Grade(int s_id, int c_id, char letter) {
 	grades.push_back(Grade(s_id,c_id,letter));
 }
 
-void StudentRecords::list_student_grades(int id) {
+std::string StudentRecords::list_student_grades(int id) {
+	std::string out = "";
 	for (Grade& g: grades) {
 		if (g.get_student_id() == id) {
-			std::cout << StudentRecords::get_course_name(g.get_course_id()) << ": " << g.get_grade() << std::endl;
+			out.append( StudentRecords::get_course_name(g.get_course_id()) + ": " + g.get_grade() + "\n");
 		}
 	}
+	return out;
 }
 
 std::string StudentRecords::get_course_name(int id) {
@@ -100,24 +103,103 @@ float StudentRecords::GPA(int id) {
 	}
 	else {
 		std::cout << "Student not found.";
+		return gpa;
 	}
 	//return gpa;
 }
 
-void StudentRecords::report_card(int id) {
-	std::string st_name = StudentRecords::get_student_name(id);
-	if (st_name.compare("none") != 0) {
-		std::cout << st_name << std::endl;
+std::string StudentRecords::report_card(int id) {
+	std::string out = StudentRecords::get_student_name(id);
+	//std::cout << out;
+	float gpa = 0.0f;
+	if (out.compare("none") != 0) {
+		/*std::cout << st_name << std::endl;
 		StudentRecords::list_student_grades(id);
 		std::cout << "GPA: " << StudentRecords::GPA(id) << std::endl;
+		*/
+		gpa = StudentRecords::GPA(id);
+		out += "\n" + StudentRecords::list_student_grades(id);
+		out += "GPA: ";
+		//std::cout << gpa;
+		out += std::to_string(gpa);
+		out += "\n";
+		return out;
 	}
 	else {
-		std::cout << "Student not found.";
+		//std::cout << "Student not found.";
+		return "Student not found.";
 	}
 	
 }
-void StudentRecords::init() {
-	add_Student( 1, "George P. Burdell");
+
+void StudentRecords::write_rcards() {
+	std::ofstream writer;
+	writer.open("reportcards.txt");
+	if (writer.fail()) {
+		std::cout << "Could not write to reportcards.txt" << std::endl;
+	}
+	else {
+		for (Student s : students) {
+			writer << StudentRecords::report_card(s.get_id());
+		}
+		writer.close();
+	}
+}
+
+int StudentRecords::init(std::string st_file, std::string cour_file, std::string grad_file) {
+	std::ifstream reader;
+	reader.open(st_file);
+	if (reader.fail()) {
+		std::cout << "Failed to read student file.";
+		return 1;
+	}
+	else {
+		while (!reader.eof()) {
+			std::string in;
+			std::getline(reader, in);
+			int id = std::stoi(in);
+			std::getline(reader, in);
+			add_Student(id, in);
+		}
+		reader.close();
+	}
+	reader.open(grad_file);
+	if (reader.fail()) {
+		std::cout << "Failed to read grade file.";
+		return 1;
+	}
+	else {
+		while (!reader.eof()) {
+			std::string in;
+			std::getline(reader, in);
+			int s_id = std::stoi(in);
+			std::getline(reader, in);
+			int c_id = std::stoi(in);
+			std::getline(reader, in);
+			add_Grade(s_id, c_id, in[0]);
+		}
+		reader.close();
+	}
+	reader.open(cour_file);
+	if (reader.fail()) {
+		std::cout << "Failed to read course file.";
+		return 1;
+	}
+	else {
+		while (!reader.eof()) {
+			std::string in;
+			std::string name;
+			std::getline(reader, in);
+			int id = std::stoi(in);
+			std::getline(reader, name);
+			std::getline(reader, in);
+			int creds = std::stoi(in);
+			add_Course(id, name, creds);
+		}
+		reader.close();
+	}
+	return 0;
+	/*add_Student( 1, "George P. Burdell");
 	add_Student(2, "Nancy Rhodes");
 	add_Course(1, "Algebra", 5);
 	add_Course(2, "Physics", 4);
@@ -129,5 +211,5 @@ void StudentRecords::init() {
 	add_Grade(2, 1, 'A');
 	add_Grade(2, 2, 'A');
 	add_Grade(2, 4, 'B');
-
+	*/
 }
