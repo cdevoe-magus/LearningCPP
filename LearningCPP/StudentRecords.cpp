@@ -89,7 +89,7 @@ float StudentRecords::GPA(int id) {
 		if (creds > 0) {
 			//std::cout << creds << std::endl;
 			gpa = gpa / creds;
-			std::cout << sd_name << "'s gpa is: " << gpa << std::endl;
+			//std::cout << sd_name << "'s gpa is: " << gpa << std::endl;
 			return gpa;
 		}
 		else {
@@ -105,9 +105,16 @@ float StudentRecords::GPA(int id) {
 }
 
 void StudentRecords::report_card(int id) {
-	std::cout << StudentRecords::get_student_name(id) << std::endl;
-	StudentRecords::list_student_grades(id);
-	std::cout << "GPA: " << StudentRecords::GPA(id) << std::endl;
+	std::string st_name = StudentRecords::get_student_name(id);
+	if (st_name.compare("none") != 0) {
+		std::cout << st_name << std::endl;
+		StudentRecords::list_student_grades(id);
+		std::cout << "GPA: " << StudentRecords::GPA(id) << std::endl;
+	}
+	else {
+		std::cout << "Student not found.";
+	}
+	
 }
 void StudentRecords::init() {
 	add_Student( 1, "George P. Burdell");

@@ -7,8 +7,8 @@ StudentRecords SR;
 int main() {
 	SR.init();
 	int id;
-	std::cout << "Who's GPA do you want to calculate. Please give their ID."<< std::endl;
+	std::cout << "Who's report card do you want? Please give their ID."<< std::endl;
 	std::cin >> id;
-	SR.GPA(id);
+	SR.report_card(id);
 	return 0;
 }
